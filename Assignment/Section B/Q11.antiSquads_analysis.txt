@@ -1,0 +1,80 @@
+
+Q.11: Save Delhi City
+Suppose you are Shaktimaan and you have decided to do something to save your
+favorite city (Delhi) against the attack of Tamraj Kilvish, since no one else
+surprisingly seems bothered about it, and are just suffering through various attacks by
+various different creatures.
+Seeing your passion, N people of Delhi decided to come forward to try their best in
+saving their city. Now you have decided to strategize these N people into a formation
+of AT LEAST K people in a group. Otherwise, that group won't survive.
+Let's demonstrate this by an example. Let's say that there were 10 people, and each
+group required at least 3 people in it for its survival. Then, the following 5 groups can
+be made:
+· 10 - Single group of 10 members.
+· 7, 3 - Two groups. One consists of 7 members, the other one of 3 members.
+· 6, 4 - Two groups. One consists of 6 members, the other one of 4 members.
+· 5, 5 - Two groups. One consists of 5 members, the other one of 5 members.
+· 4, 3, 3 - Three groups. One consists of 4 members, the other two of 3 members.
+Given the value of N, and K - find out the number of ways you can form these groups
+(anti-squads) to save Delhi city.
+
+-----------------------------------------------------------------------------------------------------
+
+
+Function: antiSqaud(N, max_ppl, K)
+
+	The function antiSquad(N, max_ppl, K) calculates no. of partitons possible of 'N' people in such a way that each group in a partition 
+	has atmost 'max_ppl' and atleast 'K' number of people. 
+
+	where,
+		N : total number of people to be partitioned  
+	  	max_ppl : maximum number of people allowed in each group
+	   	K : minimum number of people required in each group(remains same for each recursive call)
+	
+
+	parition_count: 2D array containing values returned by function call antiSquad(N,max_ppl,K) for every valid combination of N and 					max_ppl.
+					Since overlapping recursive calls are made, we use a parition_count to store already computed values.
+
+	Return value: No. of possible partition
+
+	Approach: 
+			1. Dyanamic programming
+			2. Recursion
+
+
+
+	Pseudocode
+
+	antiSqaud(N, max_ppl, K):
+    	1.	if N == 0: return 1
+    	2.	if N < K: return 0
+    	3.	if max_ppl < K: return 0
+    	4.	if parition_count[N][max_ppl] == NIL:
+      	5.		parition_count[N][max_ppl] = antiSqaud(N-max_ppl, max_ppl, K) + antiSqaud(N, max_ppl-1, K)
+    	6.	return parition_count[N][max_ppl]
+
+
+
+
+Complexity Analysis:
+
+Total no. of people = N
+Minimum no. of people required in each group = K
+Let max_ppl = m
+
+Recurrence relation:	T(N,m) = T(N-m,m) + T(N,m-1)	;	N, m <= N
+			T(0,m) = 1
+			T(N,0) = 0
+			T(N,m) = 0			;	N < K or m < K
+
+The base cases take constant time - O(1).
+Size of parition_count is N x N.
+
+Values of parition_count[n][m] for N,m <= N are calculated only once 
+since value is immediately returned if already computed.
+Therefore, total time complexity is O(N^2). 
+
+Time complexity:	O(N^2)
+Space complexity:	O(N^2)
+
+

@@ -1,0 +1,94 @@
+
+Q.10: (Planning a party).
+Alice wants to throw a party and is deciding whom to call. She has n (which is at least
+11) people to choose from and she has made up a list of which pairs of these people
+know each other. She wants to invite as many people as possible subject to the
+following two constraints:
+1. Every person invited should know at least five other people that are invited.
+2. Every person invited should not know at least five other people that are invited.
+Design an efficient algorithm for maximizing the number of people she can invite.
+Remember to analyze the running time and correctness.
+Hint: Maximizing the number of invitees is the same as minimizing the number of
+people Alice doesn’t invite. Obviously Alice might not be able to invite everyone. For
+example, if one of the n people knows less than five people out of the n potential
+invitees then the first constraint can never be satisfied for that person.
+
+--------------------------------------------------------------------------------------------------
+	
+	
+	Function 1: countknown(n, person)
+
+		The function countknown(n, person) calculates number of people that a person knows.
+
+		where,
+		   n: total number of people
+		   person: person for whom to count how many people he/she knows
+
+		Return value: count of number of people, person knows
+
+
+	Pseudocode
+	
+	countknown(n, person)
+    	1.	count = 0;
+    	2.	for i = 1 to n
+    	3.		if isPotential[i] == true and adj_matrix[i][person]
+    	4.			count = count + 1
+      	5.	return count
+
+
+
+Complexity:
+
+Function 1:
+
+line 1 	  -> O(1)
+loop 2-4  -> O(n)	linear time
+line 5	  -> O(1)
+	
+	
+-------------------------------------------------------
+
+	Function 2: maximize_invitees(n)
+
+		This function computes all persons who can be invitated for a party out of n people based on following conditions:
+		1. Every person invited should know at least five other people that are invited.
+		2. Every person invited should not know at least five other people that are invited.
+		3. Number of invitees is maximized
+
+
+	Pseudocode
+
+	maximize_invitees(n):
+	1.	potential_count = n;
+	2.	for p = 1 to n
+	3.		known = countknown(n,p);
+	4.		unknown = potential_count - known - 1;
+	5.		if isPotential[p] and (known < 5 or unknown < 5) 
+	6.			isPotential[p] = false
+	7.			potential_count = potential_count - 1
+	8.			p = 0
+	9.			if potential_count < 11
+	10.				for i = 1 to n
+	11.					isPotential[i] = false
+	12.				break	
+
+
+Complexity:
+
+line 1		-> O(1)
+line 2		-> p iterates from 1 to n, 
+line 3		-> O(n) it makes a call to countknown in every iteration
+line 4		-> O(1)
+line 5		-> if the condition is true, the value of p is again set to 1.
+		   	   which implies there will be more than n iterations in line 2. In worst case value of p is set to 1 by every value of p,
+		  	   therefore the main loop runs atmost n^2 times.
+line 6-8	-> O(1)
+line 9		-> if this condition is true, we will come out of the main loop. and line 10-11 will iterate n times but only once,
+			   hence it will not effect the degree of time complexity
+
+
+Since, countknown is called atmost n^2 time. 
+
+	Time complexity  = O(n^3)
+	
